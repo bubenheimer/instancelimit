@@ -1,0 +1,97 @@
+/*
+ * Copyright (c) 2015-2023 Uli Bubenheimer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    id('maven-publish')
+    id('signing')
+}
+
+android {
+    namespace "org.bubenheimer.instancelimit"
+
+    buildFeatures {
+        buildConfig false
+    }
+
+    setCompileSdkVersion(libs.versions.android.sdk.compile.get())
+
+    compileOptions {
+        setSourceCompatibility(libs.versions.java.get())
+        setTargetCompatibility(libs.versions.java.get())
+    }
+
+    defaultConfig {
+        setTargetSdkVersion(libs.versions.android.sdk.target.get())
+        setMinSdkVersion(libs.versions.android.sdk.min.get())
+        versionName version
+    }
+
+    kotlinOptions {
+        jvmTarget = libs.versions.java.get()
+        freeCompilerArgs = ["-Xexplicit-api=strict"]
+    }
+
+    variantFilter { variant ->
+        if (getBuildType().getName() == "release") {
+            setIgnore(true)
+        }
+    }
+
+    publishing {
+        singleVariant('debug') {
+            withJavadocJar()
+            withSourcesJar()
+        }
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = libs.versions.java.get()
+    }
+}
+
+dependencies {
+    implementation(project(":api"))
+
+    testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    kspTest(project(':processor'))
+}
+
+publishing {
+    publications {
+        library(MavenPublication) {
+            afterEvaluate {
+                from components.debug
+            }
+
+            pom pomConfig
+        }
+    }
+
+    repositories publicationRepositories
+
+    signing {
+        useGpgCmd()
+
+        sign publishing.publications.library
+    }
+}
