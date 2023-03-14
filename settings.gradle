@@ -45,6 +45,7 @@ dependencyResolutionManagement {
 
             version('kotlin', '1.8.10')
 
+//            version('ksp', '2.0.255-SNAPSHOT')
             version('ksp', '1.8.10-1.0.9')
 
             version('mockk', '1.13.4')

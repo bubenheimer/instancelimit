@@ -43,6 +43,12 @@ internal class InstanceLimitProcessor(
 
     private val specs: MutableList<InstanceLimitSpec> = mutableListOf()
 
+    //TODO local classes disabled due to ksp crashes: https://github.com/google/ksp/issues/1335
+//    private val visitLocalClasses: Boolean =
+//        environment.options["instanceLimits.visitLocalClasses"]?.toBoolean() == true
+
+    private val visitLocalClasses: Boolean = false
+
     private val skipAnalyzerErrors: Boolean =
         environment.options["instanceLimits.skipAnalyzerErrors"]?.toBoolean() != false
 
@@ -73,6 +79,14 @@ internal class InstanceLimitProcessor(
 
             val pathString: String = path.joinToString("\$")
 
+            //TODO below approaches can crash KSP on local classes:
+            // https://github.com/google/ksp/issues/1335
+
+            //TODO only available in ksp PR for now:
+            // https://github.com/google/ksp/issues/1336
+//            @OptIn(KspExperimental::class)
+//            val pathString: String = resolver.mapToJvmClassName(classDeclaration)!!
+
             val literal: String = pathString.stringLiteral()
 
             ClassInfo.JVMBinaryName(literal)
@@ -101,7 +115,9 @@ internal class InstanceLimitProcessor(
     }
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        resolver.getSymbolsWithAnnotation(instanceLimitQualifiedName)
+        //TODO Ignores annotations inside property getters & setters, due to KSP limitation:
+        // https://github.com/google/ksp/issues/1332
+        resolver.getSymbolsWithAnnotation(instanceLimitQualifiedName, inDepth = visitLocalClasses)
             .forEach {
                 try {
                     process(it)
@@ -267,6 +283,40 @@ internal class InstanceLimitProcessor(
             parentDeclaration.buildPath(reversePath)
         }
     }
+
+    // Old approach, including overly simplistic provisions for local classes
+//    private tailrec fun KSDeclaration.assembleBinaryClassName(reversePath: MutableList<String>) {
+//        val parentDeclaration: KSDeclaration? = parentDeclaration
+//
+//        if (parentDeclaration == null) {
+//            when (this) {
+//                is KSClassDeclaration -> {}
+//
+//                is KSFunctionDeclaration, is KSPropertyDeclaration -> {
+//                    val fileName = containingFile!!.fileName
+//
+//                    val extension: String = fileName.substring(fileName.length - 3)
+//
+//                    if (extension.lowercase() == ".kt") {
+//                        reversePath.add(
+//                            fileName.dropLast(3).replaceFirstChar {
+//                                if (it.isLowerCase()) it.uppercaseChar() else it
+//                            } + "Kt")
+//                    } else {
+//                        logAnalyzerError("Unexpected file name extension $extension", this)
+//                    }
+//                }
+//
+//                else -> {
+//                    logAnalyzerError("Unexpected element $simpleName", this)
+//                }
+//            }
+//        } else {
+//            reversePath.add(parentDeclaration.simpleName.asString())
+//
+//            parentDeclaration.assembleBinaryClassName(reversePath)
+//        }
+//    }
 
     /**
      *  Print with code reference

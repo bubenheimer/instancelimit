@@ -42,6 +42,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 }
 
 ksp {
+//    arg("instanceLimits.visitLocalClasses", "true")
     arg("instanceLimits.skipAnalyzerErrors", "false")
 }
 

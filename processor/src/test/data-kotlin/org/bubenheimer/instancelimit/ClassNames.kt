@@ -45,7 +45,45 @@ private class Mine {
     @InstanceLimit(7)
     private class MineToo(private val mine: Int) {
         @InstanceLimit(8)
-        private inner class AlsoMine
+        private inner class AlsoMine {
+            fun yes() {
+//                @InstanceLimit(9)
+                class LocalMine
+            }
+        }
+
+        private var myVal: String = "7"
+            get() {
+//                @InstanceLimit(10)
+                class HiFive
+
+                return field
+            }
+            set(value) {
+//                @InstanceLimit(11)
+                class HiSeven
+
+                field = value
+            }
+
+        private var myVal2: String
+            get() {
+//                @InstanceLimit(10)
+                class HiFive
+
+                return "Hi"
+            }
+            set(value) {
+//                @InstanceLimit(11)
+                class HiSeven
+
+                myVal = value
+            }
+
+        private fun myFun() {
+//            @InstanceLimit(1)
+            class HiSix
+        }
     }
 }
 
@@ -54,8 +92,32 @@ private class MoreMine {
     @InstanceLimit(1)
     class MineToo(private val mine: Int) {
         @InstanceLimit(1)
-        private inner class AlsoMine
+        private inner class AlsoMine {
+            fun yes() {
+//                @InstanceLimit(1)
+                class LocalMine
+            }
+        }
+
+        fun myFun() {
+//            @InstanceLimit(1)
+            class FunClass
+        }
     }
+
+    @JvmName("nothisone")
+    fun namingFun() {
+//        @InstanceLimit(3)
+        class WhatsThis
+    }
+
+    @get:JvmName("otherprop")
+    var myProp: Int
+        get() = 1
+        set(value) {
+//            @InstanceLimit(5)
+            class Yippee
+        }
 }
 
 @InstanceLimit(1)
@@ -64,7 +126,33 @@ private class FinalMine
 abstract class Hello
 
 @InstanceLimit(1)
-class Hello2 : Hello()
+class Hello2 : Hello() {
+    internal fun mangled() {
+//        @InstanceLimit(1)
+        class WhatsMyName
+    }
+
+    internal val alsoMangled: String
+        get() {
+//            @InstanceLimit(1)
+            class WhatsTheBigDeal
+            return "hi"
+        }
+}
+
+fun doit() {
+//    @InstanceLimit(1)
+    open class LocalMine {
+//        @InstanceLimit(1)
+        inner class InMine
+    }
+
+//    @InstanceLimit(1)
+    object : LocalMine() {
+//        @InstanceLimit(1)
+        inner class Too
+    }
+}
 
 @InstanceLimit(2)
 internal class ModuleOnly {
