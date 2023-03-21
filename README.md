@@ -6,7 +6,7 @@ A KSP-based processor providing a declarative approach based on an
 for tracking Java and Kotlin class instances. This is primarily intended for Android, via
 [StrictMode.VmPolicy.Builder.setClassInstanceLimit()](https://developer.android.com/reference/android/os/StrictMode.VmPolicy.Builder#setClassInstanceLimit(java.lang.Class,%20int))
 
-Multi-module builds are supported, and even external libraries built separately, both Amdroid libraries
+Multi-module builds are supported, and even external libraries built separately, both Android libraries
 and plain Java libraries.
 
 The processor is compatible with Kotlin multiplatform builds as well; the processor output could
