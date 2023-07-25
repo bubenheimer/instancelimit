@@ -113,8 +113,8 @@ on these issues and participate in the discussion, to hopefully see them resolve
 
 1. KSP crash when getting the full name of local classes:
    https://github.com/google/ksp/issues/1335
-2. Local classes in property getters and setters are unsupported in KSP:
-   https://github.com/google/ksp/issues/1332
+2. ~~Local classes in property getters and setters are unsupported in KSP:
+   https://github.com/google/ksp/issues/1332~~
 3. The processor needs access to binary class names:
    https://github.com/google/ksp/issues/1336
 4. KSP ignores local Java classes, presumably mimicking Java annotation processing: 
