@@ -45,9 +45,9 @@ dependencyResolutionManagement {
 
             version('kotlin', '1.9.0')
 
-            version('ksp', '1.9.0-1.0.12')
+            version('ksp', '1.9.0-1.0.13')
 
-            version('mockk', '1.13.5')
+            version('mockk', '1.13.7')
 
 
             plugin('android-library', 'com.android.library')
