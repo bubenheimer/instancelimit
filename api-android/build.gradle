@@ -29,7 +29,7 @@ android {
         buildConfig false
     }
 
-    setCompileSdkVersion(libs.versions.android.sdk.compile.get())
+    setCompileSdk(libs.versions.android.sdk.compile.get().toInteger())
 
     compileOptions {
         setSourceCompatibility(libs.versions.java.get())
@@ -37,8 +37,8 @@ android {
     }
 
     defaultConfig {
-        setTargetSdkVersion(libs.versions.android.sdk.target.get())
-        setMinSdkVersion(libs.versions.android.sdk.min.get())
+        setTargetSdk(libs.versions.android.sdk.target.get().toInteger())
+        setMinSdk(libs.versions.android.sdk.min.get().toInteger())
         versionName version
     }
 

@@ -31,23 +31,23 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         libs {
-            version('android-plugin', '8.1.0')
+            version('android-plugin', '8.2.0')
 
-            version('android-sdk-compile', 'android-34')
+            version('android-sdk-compile', '34')
             version('android-sdk-min', '21')
             version('android-sdk-target', '34')
 
-            version('androidx-annotation', '1.6.0')
+            version('androidx-annotation', '1.7.0')
 
             version('java', JavaVersion.VERSION_11.toString())
 
             version('junit', '4.13.2')
 
-            version('kotlin', '1.9.0')
+            version('kotlin', '1.9.21')
 
-            version('ksp', '1.9.0-1.0.13')
+            version('ksp', '1.9.21-1.0.15')
 
-            version('mockk', '1.13.7')
+            version('mockk', '1.13.8')
 
 
             plugin('android-library', 'com.android.library')
