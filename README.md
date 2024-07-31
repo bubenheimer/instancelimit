@@ -120,6 +120,11 @@ on these issues and participate in the discussion, to hopefully see them resolve
 4. KSP ignores local Java classes, presumably mimicking Java annotation processing: 
    https://github.com/google/ksp/issues/1345
 
+Also: Android `setClassInstanceLimit` is currently incompatible with
+setting a listener for handling StrictMode policy violations; setting a listener will
+implicitly disable class instance limits:
+https://issuetracker.google.com/issues/348683481
+
 ## Implementation details
 
 For each module on which it is run with some meaningful output, the processor generates a single
