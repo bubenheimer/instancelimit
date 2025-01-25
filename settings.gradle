@@ -28,61 +28,6 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
-
-    versionCatalogs {
-        libs {
-            version('android-plugin', '8.2.0')
-
-            version('android-sdk-compile', '34')
-            version('android-sdk-min', '21')
-            version('android-sdk-target', '34')
-
-            version('androidx-annotation', '1.7.0')
-
-            version('java', JavaVersion.VERSION_11.toString())
-
-            version('junit', '4.13.2')
-
-            version('kotlin', '1.9.21')
-
-            version('ksp', '1.9.21-1.0.15')
-
-            version('mockk', '1.13.8')
-
-
-            plugin('android-library', 'com.android.library')
-                    .versionRef('android-plugin')
-
-            plugin('kotlin-android', 'org.jetbrains.kotlin.android')
-                    .versionRef('kotlin')
-
-            plugin('kotlin-jvm', 'org.jetbrains.kotlin.jvm')
-                    .versionRef('kotlin')
-
-            plugin('ksp', 'com.google.devtools.ksp')
-                    .versionRef('ksp')
-
-
-            library('androidx-annotation', 'androidx.annotation', 'annotation')
-                    .versionRef('androidx-annotation')
-
-            library('junit', 'junit', 'junit')
-                    .versionRef('junit')
-
-            library('kotlin-test', 'org.jetbrains.kotlin', 'kotlin-test')
-                    .versionRef('kotlin')
-
-            library('kotlin-test-junit', 'org.jetbrains.kotlin', 'kotlin-test-junit')
-                    .versionRef('kotlin')
-
-
-            library('ksp-api', 'com.google.devtools.ksp', 'symbol-processing-api')
-                    .versionRef('ksp')
-
-            library('mockk', 'io.mockk', 'mockk')
-                    .versionRef('mockk')
-        }
-    }
 }
 
 rootProject.setName("instancelimit")

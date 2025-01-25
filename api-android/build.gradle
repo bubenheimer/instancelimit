@@ -22,6 +22,12 @@ plugins {
     id('signing')
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(libs.versions.java.toolchain.get())
+    }
+}
+
 android {
     namespace "org.bubenheimer.instancelimit"
 
@@ -32,8 +38,8 @@ android {
     setCompileSdk(libs.versions.android.sdk.compile.get().toInteger())
 
     compileOptions {
-        setSourceCompatibility(libs.versions.java.get())
-        setTargetCompatibility(libs.versions.java.get())
+        setSourceCompatibility(libs.versions.java.source.get())
+        setTargetCompatibility(libs.versions.java.source.get())
     }
 
     defaultConfig {
@@ -43,7 +49,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = libs.versions.java.get()
+        jvmTarget = libs.versions.java.source.get()
         freeCompilerArgs = ["-Xexplicit-api=strict"]
     }
 
@@ -63,7 +69,7 @@ android {
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
     kotlinOptions {
-        jvmTarget = libs.versions.java.get()
+        jvmTarget = libs.versions.java.source.get()
     }
 }
 

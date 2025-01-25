@@ -22,20 +22,24 @@ plugins {
 
 compileKotlin {
     kotlinOptions {
-        jvmTarget = libs.versions.java.get()
+        jvmTarget = libs.versions.java.source.get()
         freeCompilerArgs = ["-Xexplicit-api=strict"]
     }
 }
 
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = libs.versions.java.get()
+        jvmTarget = libs.versions.java.source.get()
     }
 }
 
 java {
-    sourceCompatibility = libs.versions.java.get()
-    targetCompatibility = libs.versions.java.get()
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(libs.versions.java.toolchain.get())
+    }
+
+    sourceCompatibility = libs.versions.java.source.get()
+    targetCompatibility = libs.versions.java.source.get()
 
     withJavadocJar()
     withSourcesJar()
