@@ -1,6 +1,6 @@
 [versions]
 
-android-plugin = '8.9.1'
+android-plugin = '8.10.1'
 
 android-sdk-compile = '36'
 android-sdk-min = '21'
@@ -14,11 +14,11 @@ java-toolchain = '21'
 
 junit = '4.13.2'
 
-kotlin = '2.1.20'
+kotlin = '2.1.21'
 
-ksp = '2.1.20-2.0.0'
+ksp = '2.1.21-2.0.2'
 
-mockk = '1.13.17'
+mockk = '1.14.2'
 
 
 [libraries]
