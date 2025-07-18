@@ -32,6 +32,6 @@ dependencyResolutionManagement {
 
 rootProject.setName("instancelimit")
 
-include('api')
-include('api-android')
-include('processor')
+include(':api')
+include(':api-android')
+include(':processor')

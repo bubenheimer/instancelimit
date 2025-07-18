@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 /*
  * Copyright (c) 2015-2023 Uli Bubenheimer
  *
@@ -20,16 +23,11 @@ plugins {
     id('signing')
 }
 
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = libs.versions.java.source.get()
-        freeCompilerArgs = ["-Xexplicit-api=strict"]
-    }
-}
+kotlin {
+    explicitApi = ExplicitApiMode.Strict // applied to only non-test compilations
 
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = libs.versions.java.source.get()
+    compilerOptions {
+        jvmTarget = JvmTarget.fromTarget(libs.versions.java.source.get())
     }
 }
 

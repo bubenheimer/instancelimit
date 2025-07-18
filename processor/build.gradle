@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 /*
  * Copyright 2023 Uli Bubenheimer
  *
@@ -39,9 +42,11 @@ java {
     withSourcesJar()
 }
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-    kotlinOptions {
-        jvmTarget = libs.versions.java.source.get()
+kotlin {
+    explicitApi = ExplicitApiMode.Strict // applied to only non-test compilations
+
+    compilerOptions {
+        jvmTarget = JvmTarget.fromTarget(libs.versions.java.source.get())
     }
 }
 
