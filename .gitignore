@@ -15,6 +15,7 @@
 /.idea/runConfigurations.xml
 /.idea/shelf/
 /.idea/workspace.xml
+/.kotlin/
 /build
 /local.properties
 *.iml

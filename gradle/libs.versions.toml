@@ -27,6 +27,8 @@ androidx-annotation = { module = 'androidx.annotation:annotation', version.ref =
 
 junit = { module = 'junit:junit', version.ref = 'junit' }
 
+kotlin-gradle-plugin = { module = 'org.jetbrains.kotlin:kotlin-gradle-plugin', version.ref = 'kotlin' }
+
 kotlin-test = { module = 'org.jetbrains.kotlin:kotlin-test', version.ref = 'kotlin' }
 kotlin-test-junit = { module = 'org.jetbrains.kotlin:kotlin-test-junit', version.ref = 'kotlin' }
 

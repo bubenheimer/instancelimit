@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uli Bubenheimer
+ * Copyright 2025 Uli Bubenheimer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,8 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    repositories {
-        mavenLocal()
-        google()
-        mavenCentral()
-    }
-}
-
 dependencyResolutionManagement {
     repositories {
-        mavenLocal()
-        google()
         mavenCentral()
     }
 }
-
-rootProject.setName("instancelimit")
-
-include(':api')
-include(':api-android')
-include(':processor')
