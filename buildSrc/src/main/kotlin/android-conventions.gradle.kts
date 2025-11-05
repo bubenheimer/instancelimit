@@ -18,7 +18,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode.NO_COMPATIBILITY
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget.Companion.fromTarget
 
 plugins {
+    id("com.android.library")
     kotlin("android")
+    id("base-conventions")
 }
 
 val libs = versionCatalogs.named("libs")

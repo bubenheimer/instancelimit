@@ -23,6 +23,8 @@ mockk = '1.14.6'
 
 [libraries]
 
+android-gradle-plugin = { module = 'com.android.tools.build:gradle', version.ref = 'android-plugin' }
+
 androidx-annotation = { module = 'androidx.annotation:annotation', version.ref = 'androidx-annotation' }
 
 junit = { module = 'junit:junit', version.ref = 'junit' }
@@ -37,11 +39,5 @@ ksp-api = { module = 'com.google.devtools.ksp:symbol-processing-api', version.re
 mockk = { module = 'io.mockk:mockk', version.ref = 'mockk' }
 
 [plugins]
-
-android-library = { id = 'com.android.library', version.ref = 'android-plugin' }
-
-kotlin-android = { id = 'org.jetbrains.kotlin.android', version.ref = 'kotlin' }
-
-kotlin-jvm = { id = 'org.jetbrains.kotlin.jvm', version.ref = 'kotlin' }
 
 ksp = { id = 'com.google.devtools.ksp', version.ref = 'ksp' }

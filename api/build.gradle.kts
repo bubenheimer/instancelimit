@@ -15,7 +15,6 @@
  */
 
 plugins {
-    id("base-conventions")
     id("jvm-conventions")
 }
 

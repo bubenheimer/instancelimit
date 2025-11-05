@@ -15,10 +15,8 @@
  */
 
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.ksp)
-    id("base-conventions")
     id("android-conventions")
+    alias(libs.plugins.ksp)
 }
 
 android {

@@ -19,9 +19,6 @@ pluginManagement {
         google()
         mavenCentral()
     }
-
-    includeBuild("build-logic-android")
-    includeBuild("build-logic-jvm")
 }
 
 dependencyResolutionManagement {

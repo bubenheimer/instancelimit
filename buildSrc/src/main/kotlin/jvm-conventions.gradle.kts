@@ -19,6 +19,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget.Companion.fromTarget
 
 plugins {
     kotlin("jvm")
+    id("base-conventions")
 }
 
 val libs = versionCatalogs.named("libs")
