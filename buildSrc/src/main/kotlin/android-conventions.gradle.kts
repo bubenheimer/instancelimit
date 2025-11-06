@@ -14,28 +14,9 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode.NO_COMPATIBILITY
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget.Companion.fromTarget
-
 plugins {
     id("com.android.library")
     kotlin("android")
     id("base-conventions")
-}
-
-val libs = versionCatalogs.named("libs")
-
-kotlin {
-    jvmToolchain(libs.findVersion("java.toolchain").get().toString().toInt())
-
-    explicitApi()
-
-    compilerOptions {
-        jvmTarget = fromTarget(libs.findVersion("java.source").get().toString())
-        progressiveMode = true
-        jvmDefault = NO_COMPATIBILITY
-        verbose = false
-        extraWarnings = true
-        freeCompilerArgs.add("-Xconsistent-data-class-copy-visibility")
-    }
+    id("kotlin-conventions")
 }

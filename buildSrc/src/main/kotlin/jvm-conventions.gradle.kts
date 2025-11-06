@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode.NO_COMPATIBILITY
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget.Companion.fromTarget
-
 plugins {
     kotlin("jvm")
     id("base-conventions")
+    id("kotlin-conventions")
 }
 
 val libs = versionCatalogs.named("libs")
@@ -32,19 +30,4 @@ java {
 
     withJavadocJar()
     withSourcesJar()
-}
-
-kotlin {
-    jvmToolchain(libs.findVersion("java.toolchain").get().toString().toInt())
-
-    explicitApi()
-
-    compilerOptions {
-        jvmTarget = fromTarget(libs.findVersion("java.source").get().toString())
-        progressiveMode = true
-        jvmDefault = NO_COMPATIBILITY
-        verbose = false
-        extraWarnings = true
-        freeCompilerArgs.add("-Xconsistent-data-class-copy-visibility")
-    }
 }
