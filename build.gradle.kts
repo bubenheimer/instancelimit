@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Uli Bubenheimer
+ * Copyright 2025 Uli Bubenheimer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,8 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    includeBuild("build-logic")
+plugins {
+    alias(libs.plugins.android.library) apply(false)
+    alias(libs.plugins.kotlin.android) apply(false)
+    alias(libs.plugins.kotlin.jvm) apply(false)
 }
-
-dependencyResolutionManagement {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-rootProject.setName("instancelimit")
-
-include(":api")
-include(":api-android")
-include(":processor")
