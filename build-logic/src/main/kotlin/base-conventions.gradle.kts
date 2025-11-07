@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-val libs = versionCatalogs.named("libs")
-
 plugins {
     id("maven-publish")
     id("signing")
