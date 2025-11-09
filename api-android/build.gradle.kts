@@ -19,39 +19,7 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
-android {
-    namespace = "org.bubenheimer.instancelimit"
-
-    buildFeatures {
-        buildConfig = false
-    }
-
-    libs.versions.android.sdk.compile.get().let {
-        it.toIntOrNull()?.let { compileSdk = it } ?: run { compileSdkPreview = it }
-    }
-
-    compileOptions {
-        JavaVersion.toVersion(libs.versions.java.source.get()).let {
-            sourceCompatibility = it
-            targetCompatibility = it
-        }
-    }
-
-    defaultConfig {
-        minSdk = libs.versions.android.sdk.min.get().toInt()
-    }
-
-    publishing {
-        singleVariant("debug") {
-            withJavadocJar()
-            withSourcesJar()
-        }
-    }
-}
-
-androidComponents {
-    beforeVariants { if (it.buildType == "release") it.enable = false }
-}
+android.namespace = "org.bubenheimer.instancelimit"
 
 dependencies {
     implementation(project(":api"))

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.LibraryExtension
+import com.android.build.api.variant.AndroidComponentsExtension
+import com.android.build.api.variant.LibraryAndroidComponentsExtension
+import com.android.build.gradle.LibraryPlugin
+import com.android.build.gradle.api.AndroidBasePlugin
 import org.jetbrains.kotlin.gradle.dsl.HasConfigurableKotlinCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode.NO_COMPATIBILITY
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget.Companion.fromTarget
@@ -29,10 +35,64 @@ plugins {
 group = "org.bubenheimer.instancelimit"
 version = "1.1.0-SNAPSHOT"
 
+val libs = versionCatalogs.named("libs")
+
+// Not leveraged by AGP
+plugins.withType(JavaBasePlugin::class) {
+    configure<JavaPluginExtension> {
+        JavaVersion.toVersion(libs.findVersion("java.source").get().toString()).let {
+            sourceCompatibility = it
+            targetCompatibility = it
+        }
+
+        withJavadocJar()
+        withSourcesJar()
+    }
+}
+
+fun CommonExtension<*,*,*,*,*,*>.configureCommonDsl() {
+    libs.findVersion("android.sdk.compile").get().toString().let {
+        it.toIntOrNull()?.let { compileSdk = it } ?: run { compileSdkPreview = it }
+    }
+
+    with(compileOptions) {
+        // AGP does not leverage the Java/JVM plugin, so must do this explicitly here
+        JavaVersion.toVersion(libs.findVersion("java.source").get()).let {
+            sourceCompatibility = it
+            targetCompatibility = it
+        }
+    }
+
+    with(defaultConfig) {
+        minSdk = libs.findVersion("android.sdk.min").get().toString().toInt()
+    }
+}
+
+plugins.withType(LibraryPlugin::class) {
+    extensions.configure(LibraryExtension::class) {
+        configureCommonDsl()
+    }
+
+    extensions.configure(LibraryAndroidComponentsExtension::class) {
+        finalizeDsl { ->
+            publishing {
+                singleVariant("debug") {
+                    withJavadocJar()
+                    withSourcesJar()
+                }
+            }
+        }
+    }
+}
+
+plugins.withType(AndroidBasePlugin::class) {
+    extensions.configure(AndroidComponentsExtension::class) {
+        beforeVariants { if (it.buildType == "release") it.enable = false }
+    }
+}
+
 plugins.withType(KotlinBasePlugin::class) {
     configure<KotlinProjectExtension> {
-        val libs = versionCatalogs.named("libs")
-
         jvmToolchain(libs.findVersion("java.toolchain").get().toString().toInt())
 
         explicitApi()

@@ -18,15 +18,3 @@ plugins {
     kotlin("jvm")
     id("base-conventions")
 }
-
-val libs = versionCatalogs.named("libs")
-
-java {
-    JavaVersion.toVersion(libs.findVersion("java.source").get().toString()).let {
-        sourceCompatibility = it
-        targetCompatibility = it
-    }
-
-    withJavadocJar()
-    withSourcesJar()
-}
