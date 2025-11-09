@@ -17,7 +17,6 @@
 plugins {
     kotlin("jvm")
     id("base-conventions")
-    id("kotlin-conventions")
 }
 
 val libs = versionCatalogs.named("libs")

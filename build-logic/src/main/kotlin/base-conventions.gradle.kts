@@ -14,13 +14,43 @@
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.gradle.dsl.HasConfigurableKotlinCompilerOptions
+import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode.NO_COMPATIBILITY
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.Companion.fromTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
+import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinBasePlugin
+
 plugins {
-    id("maven-publish")
-    id("signing")
+    `maven-publish`
+    signing
 }
 
 group = "org.bubenheimer.instancelimit"
 version = "1.1.0-SNAPSHOT"
+
+plugins.withType(KotlinBasePlugin::class) {
+    configure<KotlinProjectExtension> {
+        val libs = versionCatalogs.named("libs")
+
+        jvmToolchain(libs.findVersion("java.toolchain").get().toString().toInt())
+
+        explicitApi()
+
+        // Cast is valid for both KotlinJvmProjectExtension and KotlinAndroidProjectExtension,
+        // which is all we care about; crash otherwise to flag invalid assumptions
+        @Suppress("UNCHECKED_CAST")
+        (this as HasConfigurableKotlinCompilerOptions<KotlinJvmCompilerOptions>).compilerOptions
+            .apply {
+                jvmTarget = fromTarget(libs.findVersion("java.source").get().toString())
+                progressiveMode = true
+                jvmDefault = NO_COMPATIBILITY
+                verbose = false
+                extraWarnings = true
+                freeCompilerArgs.add("-Xconsistent-data-class-copy-visibility")
+            }
+    }
+}
 
 publishing {
     publications {
