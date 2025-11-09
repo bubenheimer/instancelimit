@@ -17,7 +17,6 @@
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.variant.AndroidComponentsExtension
-import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.gradle.LibraryPlugin
 import com.android.build.gradle.api.AndroidBasePlugin
 import org.jetbrains.kotlin.gradle.dsl.HasConfigurableKotlinCompilerOptions
@@ -71,15 +70,11 @@ fun CommonExtension<*,*,*,*,*,*>.configureCommonDsl() {
 plugins.withType(LibraryPlugin::class) {
     extensions.configure(LibraryExtension::class) {
         configureCommonDsl()
-    }
 
-    extensions.configure(LibraryAndroidComponentsExtension::class) {
-        finalizeDsl { ->
-            publishing {
-                singleVariant("debug") {
-                    withJavadocJar()
-                    withSourcesJar()
-                }
+        publishing {
+            singleVariant("debug") {
+                withJavadocJar()
+                withSourcesJar()
             }
         }
     }
