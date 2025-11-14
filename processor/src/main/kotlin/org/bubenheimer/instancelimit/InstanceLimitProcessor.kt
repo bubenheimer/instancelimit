@@ -18,10 +18,22 @@ package org.bubenheimer.instancelimit
 
 import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.getAnnotationsByType
-import com.google.devtools.ksp.processing.*
-import com.google.devtools.ksp.symbol.*
+import com.google.devtools.ksp.processing.CodeGenerator
+import com.google.devtools.ksp.processing.Dependencies
+import com.google.devtools.ksp.processing.KSPLogger
+import com.google.devtools.ksp.processing.Resolver
+import com.google.devtools.ksp.processing.SymbolProcessor
+import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
+import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import com.google.devtools.ksp.symbol.ClassKind.CLASS
 import com.google.devtools.ksp.symbol.ClassKind.OBJECT
+import com.google.devtools.ksp.symbol.KSAnnotated
+import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSDeclaration
+import com.google.devtools.ksp.symbol.KSFile
+import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.symbol.KSNode
+import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.symbol.Modifier.ABSTRACT
 import com.google.devtools.ksp.symbol.Modifier.ANNOTATION
 import com.google.devtools.ksp.symbol.Modifier.INTERNAL
@@ -45,6 +57,10 @@ internal class InstanceLimitProcessor(
 
     private val skipAnalyzerErrors: Boolean =
         environment.options["instanceLimits.skipAnalyzerErrors"]?.toBoolean() != false
+
+    private val suppressRedundantPublicVisibilityModifierWarning: Boolean =
+        environment.options["instancelimits.suppressRedundantPublicVisibilityModifierWarning"]
+            ?.toBoolean() != false
 
     private fun addInstanceLimit(
         classDeclaration: KSClassDeclaration,
@@ -273,6 +289,73 @@ internal class InstanceLimitProcessor(
      */
     private fun logAnalyzerError(message: String, symbol: KSNode?) =
         if (skipAnalyzerErrors) logger.warn(message, symbol) else logger.error(message, symbol)
+
+    private fun generateInstanceLimitsProvider(
+        className: String,
+        instanceLimitSpecs: List<InstanceLimitSpec>
+    ): String = buildString {
+        val (nonReflectiveSpecs, reflectiveSpecs) =
+            instanceLimitSpecs.partition { it.classInfo is ClassInfo.QualifiedName }
+
+        if (suppressRedundantPublicVisibilityModifierWarning) {
+            append("""
+@file:Suppress("REDUNDANT_VISIBILITY_MODIFIER")
+
+""".trimMargin()
+            )
+        }
+
+        append("""
+package $INSTANCE_LIMITS_PROVIDER_CLASS_PACKAGE
+
+public class $className : ${instanceLimitsProviderClass.simpleName}() {
+
+""".trimMargin()
+        )
+
+        nonReflectiveSpecs.takeUnless { it.isEmpty() }?.let {
+            append("""
+    override val nonReflective: List<Pair<kotlin.reflect.KClass<*>, Int>> = listOf(
+
+""".trimMargin())
+
+            it.forEach {
+                append("""
+        ${(it.classInfo as ClassInfo.QualifiedName).path}::class to ${it.limit},
+
+""".trimMargin())
+            }
+
+            append("""
+    )
+
+""".trimMargin())
+        }
+
+        reflectiveSpecs.takeUnless { it.isEmpty() }?.let {
+            append("""
+    override val reflective: List<Pair<String, Int>> = listOf(
+
+""".trimMargin())
+
+            it.forEach {
+                append("""
+        ${(it.classInfo as ClassInfo.JVMBinaryName).pathLiteral} to ${it.limit},
+
+""".trimMargin())
+            }
+
+            append("""
+    )
+
+""".trimMargin())
+        }
+
+        append("""
+}
+
+""".trimMargin())
+    }
 }
 
 internal class InstanceLimitProcessorProvider : SymbolProcessorProvider {
@@ -327,62 +410,3 @@ private data class InstanceLimitSpec(
     val limit: Int,
     val source: KSFile
 )
-
-private fun generateInstanceLimitsProvider(
-    className: String,
-    instanceLimitSpecs: List<InstanceLimitSpec>
-): String = buildString {
-    val (nonReflectiveSpecs, reflectiveSpecs) =
-        instanceLimitSpecs.partition { it.classInfo is ClassInfo.QualifiedName }
-
-    append("""
-package $INSTANCE_LIMITS_PROVIDER_CLASS_PACKAGE
-
-public class $className : ${instanceLimitsProviderClass.simpleName}() {
-
-""".trimMargin()
-    )
-
-    nonReflectiveSpecs.takeUnless { it.isEmpty() }?.let {
-        append("""
-    override val nonReflective: List<Pair<kotlin.reflect.KClass<*>, Int>> = listOf(
-
-""".trimMargin())
-
-        it.forEach {
-            append("""
-        ${(it.classInfo as ClassInfo.QualifiedName).path}::class to ${it.limit},
-
-""".trimMargin())
-        }
-
-        append("""
-    )
-
-""".trimMargin())
-    }
-
-    reflectiveSpecs.takeUnless { it.isEmpty() }?.let {
-        append("""
-    override val reflective: List<Pair<String, Int>> = listOf(
-
-""".trimMargin())
-
-        it.forEach {
-            append("""
-        ${(it.classInfo as ClassInfo.JVMBinaryName).pathLiteral} to ${it.limit},
-
-""".trimMargin())
-        }
-
-        append("""
-    )
-
-""".trimMargin())
-    }
-
-    append("""
-}
-
-""".trimMargin())
-}
