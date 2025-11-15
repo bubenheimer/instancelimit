@@ -2,7 +2,7 @@
 
 android-plugin = '8.13.1'
 
-android-sdk-compile = '36'
+android-sdk-compile = '36.1'
 android-sdk-min = '21'
 android-sdk-target = '36'
 
