@@ -15,6 +15,7 @@
  */
 
 plugins {
+    `java-library`
     kotlin("jvm")
     id("base-conventions")
 }
