@@ -49,7 +49,7 @@ plugins.withType(JavaBasePlugin::class) {
     }
 }
 
-fun CommonExtension<*,*,*,*,*,*>.configureCommonDsl() {
+fun CommonExtension.configureCommonDsl() {
     libs.findVersion("android.sdk.compile").get().toString().let {
         /**
          * Matches: 36, 36.1, 36-ext18, 36ext18, 36.1-ext20, 36.1ext20

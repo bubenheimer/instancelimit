@@ -1,6 +1,6 @@
 [versions]
 
-android-plugin = '8.13.2'
+android-plugin = '9.0.0'
 
 android-sdk-compile = '36.1'
 android-sdk-min = '21'
@@ -14,9 +14,9 @@ java-toolchain = '21'
 
 junit = '4.13.2'
 
-kotlin = '2.3.0'
+kotlin = { strictly = '2.3.0' } # "strictly" in case AGP is ahead of us
 
-ksp = '2.3.4'
+ksp = { strictly = '2.3.4' } # "strictly" in case AGP is ahead of us
 
 mockk = '1.14.7'
 
