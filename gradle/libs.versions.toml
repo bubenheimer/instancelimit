@@ -1,12 +1,12 @@
 [versions]
 
-android-plugin = '9.1.0'
+android-plugin = '9.2.1'
 
-android-sdk-compile = '36.1'
+android-sdk-compile = '37'
 android-sdk-min = '21'
-android-sdk-target = '36'
+android-sdk-target = '37'
 
-androidx-annotation = '1.9.1'
+androidx-annotation = '1.10.0'
 
 java-source = '11'
 
@@ -14,11 +14,11 @@ java-toolchain = '21'
 
 junit = '4.13.2'
 
-kotlin = '2.3.20!!' # "strictly" in case AGP is ahead of us
+kotlin = '2.4.0!!' # "strictly" in case AGP is ahead of us
 
-ksp = '2.3.6!!' # "strictly" in case AGP is ahead of us
+ksp = '2.3.9'
 
-mockk = '1.14.9'
+mockk = '1.14.11'
 
 
 [libraries]

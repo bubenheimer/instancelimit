@@ -162,6 +162,7 @@ publishing {
 
     repositories {
         maven {
+            //TODO P1 change repos
             url = uri(
                 if (version.toString().endsWith("SNAPSHOT")) {
                     "https://s01.oss.sonatype.org/content/repositories/snapshots/"
@@ -170,6 +171,7 @@ publishing {
                 }
             )
 
+            //TODO P1 see if I can specify in user home gradle configuration instead
             credentials {
                 username = project.properties["sonatypeUsername"].toString()
                 password = project.properties["sonatypePassword"].toString()
