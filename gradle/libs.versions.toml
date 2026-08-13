@@ -16,7 +16,7 @@ junit = '4.13.2'
 
 kotlin = '2.4.10!!' # "strictly" in case AGP is ahead of us
 
-ksp = '2.3.10'
+ksp = '2.3.11'
 
 mockk = '1.14.11'
 

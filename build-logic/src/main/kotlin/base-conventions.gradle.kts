@@ -126,10 +126,8 @@ plugins.withType(KotlinBasePlugin::class) {
 publishing {
     publications {
         register<MavenPublication>(name = "library") {
-            val publicationComponent: String by extra
-
             afterEvaluate { // lets projects set the extra first
-                from(components[publicationComponent])
+                from(components[extra["publicationComponent"].toString()])
             }
 
             pom {
@@ -173,8 +171,8 @@ publishing {
 
             //TODO P1 see if I can specify in user home gradle configuration instead
             credentials {
-                username = project.properties["sonatypeUsername"].toString()
-                password = project.properties["sonatypePassword"].toString()
+                username = providers.gradleProperty("sonatypeUsername").get()
+                password = providers.gradleProperty("sonatypePassword").get()
             }
         }
     }
