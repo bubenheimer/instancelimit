@@ -1,6 +1,6 @@
 [versions]
 
-android-plugin = '9.3.0'
+android-plugin = '9.3.1'
 
 android-sdk-compile = '37.1'
 android-sdk-min = '21'
